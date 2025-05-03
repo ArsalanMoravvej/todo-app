@@ -17,7 +17,10 @@ class TodoFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->sentence(3, true),
+            'description' => fake()->paragraph(),
+            'status' => fake()->randomElement(['in-progress', 'done', 'todo']),
+            'priority' => fake()->numberBetween(1, 3),
         ];
     }
 }
