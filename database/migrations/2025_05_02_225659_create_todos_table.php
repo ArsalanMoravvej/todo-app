@@ -14,15 +14,14 @@ return new class extends Migration
     {
         Schema::create('todos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('title');
             $table->text('description');
             $table->enum('status', ['todo', 'in-progress', 'done'])
-                ->nullable()
                 ->default('todo');
             $table->tinyInteger('priority')
                 ->unsigned()
                 ->nullable()
-                ->default(3)
                 ->comment('1=High, 2=Medium, 3=Low');
             $table->softDeletes();
             $table->timestamps();
