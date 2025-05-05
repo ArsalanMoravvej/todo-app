@@ -22,10 +22,16 @@ class StoreTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'user_id' => 'required|string|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'status' => 'nullable|in:todo,in-progress,done',
             'priority' => 'nullable|integer|between:1,3',
         ];
     }
+//    protected function prepareForValidation() {
+//        $this->merge([
+//            'field_name' => $this->fieldName,
+//        ]);
+//    }
 }

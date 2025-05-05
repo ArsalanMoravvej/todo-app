@@ -13,7 +13,7 @@ class Todo extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'status', 'priority'];
+    protected $guarded = [];
 
     public function user(): BelongsTo
     {
