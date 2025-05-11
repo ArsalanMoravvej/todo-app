@@ -28,12 +28,12 @@ return new class extends Migration
         });
 
         //Check for the priority column being in the range.
-        DB::statement(
-            /** @lang text */
-            'ALTER TABLE todos
-            ADD CONSTRAINT check_priority
-            CHECK (priority >= 1 AND priority <= 3)'
-        );
+//        DB::statement(
+//            /** @lang text */
+//            'ALTER TABLE todos
+//            ADD CONSTRAINT check_priority
+//            CHECK (priority >= 1 AND priority <= 3)'
+//        );
 
     }
 
