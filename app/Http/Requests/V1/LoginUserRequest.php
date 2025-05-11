@@ -4,7 +4,7 @@ namespace App\Http\Requests\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTodoRequest extends FormRequest
+class LoginUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,8 @@ class StoreTodoRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'status' => 'nullable|in:todo,in-progress,done',
-            'priority' => 'nullable|integer|between:1,3',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8',
         ];
     }
-//    protected function prepareForValidation() {
-//        $this->merge([
-//            'field_name' => $this->fieldName,
-//        ]);
-//    }
 }

@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * @method static create(mixed $validated)
+ */
 class Todo extends Model
 {
     /** @use HasFactory<\Database\Factories\TodoFactory> */

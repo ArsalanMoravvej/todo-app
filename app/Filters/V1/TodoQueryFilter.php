@@ -23,6 +23,7 @@ class TodoQueryFilter
 
     public function apply(Builder $query): Builder
     {
+        $query->where('user_id', $this->request->user()->id);
         $query_params = $this->request->query();
 
         if (array_key_exists('userIncluded', $query_params)) {
