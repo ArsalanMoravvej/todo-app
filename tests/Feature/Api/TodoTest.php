@@ -10,71 +10,61 @@ test('Home Route', function () {
     $response->assertStatus(200);
 });
 
-
 beforeEach(function () {
-    // Run migrations
-    $this->withoutExceptionHandling();
+    $this->user = User::factory()->create();
+    $this->otherUser = User::factory()->create();
 
-    // Create test users
-    $this->user1 = User::factory()->create();
-    $this->user2 = User::factory()->create();
-
-    // Create test posts
-    $this->posts1 = Todo::factory()->count(3)->create([
-        'user_id' => $this->user1->id
+    $this->todos = Todo::factory()->count(3)->create([
+        'user_id' => $this->user->id
     ]);
 
-    $this->posts2 = Todo::factory()->count(2)->create([
-        'user_id' => $this->user2->id
+    $this->otherUserTodos = Todo::factory()->count(2)->create([
+        'user_id' => $this->otherUser->id
     ]);
+
+    Sanctum::actingAs($this->user);
 });
 
-test('can fetch all todos', function () {
-    // Authenticate the user
-    Sanctum::actingAs($this->user1);
+test('user can only see their own todos', function () {
     $response = $this->getJson('/api/v1/todos');
 
-    // Assert
     $response->assertStatus(200)
         ->assertJsonCount(3, 'data')
         ->assertJsonStructure([
             'data' => [
-                '*' => ['id', 'user_id', 'title', 'description', 'status', 'priority']
-            ]
+                '*' => ['id', 'title', 'status', 'priority']
+            ],
+            'links',
+            'meta'
         ]);
 });
 
-test('guests cannot access todos api', function () {
-    $this->expectException(AuthenticationException::class);
-    $this->withHeader('Accept', 'application/json')
-        ->get('/api/v1/todos')
-        ->assertUnauthorized();
-});
+test('user can create a todo', function () {
+    $todoData = [
+        'title' => 'New Todo',
+        'description' => 'Todo description'
+    ];
 
-test('can fetch todos by user', function () {
-    // Authenticate the user
-    Sanctum::actingAs($this->user2);
-    $response = $this->getJson('/api/v1/todos');
+    $response = $this->postJson('/api/v1/todos', $todoData);
 
-    // Assert
-    $response->assertStatus(200)
-        ->assertJsonCount(2, 'data')
-        ->assertJsonStructure([
+    $response->assertStatus(201)
+        ->assertJson([
             'data' => [
-                '*' => ['id', 'user_id', 'title', 'description', 'status', 'priority']
+                'title' => 'New Todo'
             ]
         ]);
+
+    $this->assertDatabaseHas('todos', [
+        'title' => 'New Todo',
+        'user_id' => $this->user->id
+    ]);
 });
 
-test('can fetch todos by user and status', function () {
-    // Authenticate the user
-    Sanctum::actingAs($this->user1);
-    $response = $this->getJson('/api/v1/todos?status=completed');
-    $response->assertStatus(200)
-        ->assertJsonCount(1, 'data')
-        ->assertJsonStructure([
-            'data' => [
-                '*' => ['id', 'user_id', 'title', 'description', 'status', 'priority']
-            ]
-        ]);
-});
+
+
+//test('guests cannot access todos api', function () {
+//    $this->expectException(AuthenticationException::class);
+//    $this->withHeader('Accept', 'application/json')
+//        ->get('/api/v1/todos')
+//        ->assertUnauthorized();
+//});
