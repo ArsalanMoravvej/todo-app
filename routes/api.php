@@ -18,9 +18,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/todos', [TodoController::class, 'index']);
         Route::post('/todos', [TodoController::class, 'store']);
-        Route::get('/todos/{todo}', [TodoController::class, 'show']);
-        Route::put('/todos/{todo}', [TodoController::class, 'update']);
-        Route::patch('/todos/{todo}', [TodoController::class, 'update']);
-        Route::delete('/todos/{todo}', [TodoController::class, 'destroy']);
+        Route::get('/todos/{todo}', [TodoController::class, 'show'])->can('view', 'todo');
+        Route::put('/todos/{todo}', [TodoController::class, 'update'])->can('update', 'todo');
+        Route::patch('/todos/{todo}', [TodoController::class, 'update'])->can('update', 'todo');
+        Route::delete('/todos/{todo}', [TodoController::class, 'destroy'])->can('delete', 'todo');
     });
 });

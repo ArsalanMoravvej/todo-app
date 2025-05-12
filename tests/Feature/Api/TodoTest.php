@@ -36,7 +36,7 @@ test('can fetch all todos', function () {
 
     // Assert
     $response->assertStatus(200)
-        ->assertJsonCount(3)
+        ->assertJsonCount(3, 'data')
         ->assertJsonStructure([
             'data' => [
                 '*' => ['id', 'user_id', 'title', 'description', 'status', 'priority']
@@ -51,3 +51,30 @@ test('guests cannot access todos api', function () {
         ->assertUnauthorized();
 });
 
+test('can fetch todos by user', function () {
+    // Authenticate the user
+    Sanctum::actingAs($this->user2);
+    $response = $this->getJson('/api/v1/todos');
+
+    // Assert
+    $response->assertStatus(200)
+        ->assertJsonCount(2, 'data')
+        ->assertJsonStructure([
+            'data' => [
+                '*' => ['id', 'user_id', 'title', 'description', 'status', 'priority']
+            ]
+        ]);
+});
+
+test('can fetch todos by user and status', function () {
+    // Authenticate the user
+    Sanctum::actingAs($this->user1);
+    $response = $this->getJson('/api/v1/todos?status=completed');
+    $response->assertStatus(200)
+        ->assertJsonCount(1, 'data')
+        ->assertJsonStructure([
+            'data' => [
+                '*' => ['id', 'user_id', 'title', 'description', 'status', 'priority']
+            ]
+        ]);
+});
