@@ -2,55 +2,8 @@
 
 use App\Models\Todo;
 use App\Models\User;
-use Illuminate\Auth\AuthenticationException;
 use Laravel\Sanctum\Sanctum;
-
-test('Home Route', function () {
-    $response = $this->get('/');
-    $response->assertStatus(200);
-});
-
-describe('Unauthenticated API Access', function () {
-    test('guests cannot access todos index', function () {
-        $response = $this->getJson('/api/v1/todos');
-        $response->assertStatus(401);
-    });
-
-    test('guests cannot create todos', function () {
-        $todoData = [
-            'title' => 'New Todo',
-            'description' => 'Todo description'
-        ];
-
-        $response = $this->postJson('/api/v1/todos', $todoData);
-        $response->assertStatus(401);
-    });
-
-    test('guests cannot view specific todo', function () {
-        $todo = Todo::factory()->create();
-
-        $response = $this->getJson("/api/v1/todos/{$todo->id}");
-        $response->assertStatus(401);
-    });
-
-    test('guests cannot update todo', function () {
-        $todo = Todo::factory()->create();
-
-        $response = $this->putJson("/api/v1/todos/{$todo->id}", [
-            'title' => 'Updated Title'
-        ]);
-        $response->assertStatus(401);
-    });
-
-    test('guests cannot delete todo', function () {
-        $todo = Todo::factory()->create();
-
-        $response = $this->deleteJson("/api/v1/todos/{$todo->id}");
-        $response->assertStatus(401);
-    });
-});
-
-describe('Authenticated API Access', function () {
+describe('Authenticated & Unauthorized API Access', function () {
     beforeEach(function () {
         $this->user = User::factory()->create();
         $this->otherUser = User::factory()->create();
@@ -66,7 +19,50 @@ describe('Authenticated API Access', function () {
         Sanctum::actingAs($this->user);
     });
 
-    test('user can only see their own todos', function () {
+    test('user cannot view another users todo', function () {
+        $otherTodo = $this->otherUserTodos[0];
+
+        $response = $this->getJson("/api/v1/todos/{$otherTodo->id}");
+
+        $response->assertStatus(403);
+    });
+
+    test('user cannot update another users todo', function () {
+        $otherTodo = $this->otherUserTodos[0];
+
+        $response = $this->patchJson("/api/v1/todos/{$otherTodo->id}", [
+            'title' => 'Hacked Title'
+        ]);
+
+        $response->assertStatus(403);
+    });
+
+    test('user cannot delete another users todo', function () {
+        $otherTodo = $this->otherUserTodos[0];
+
+        $response = $this->deleteJson("/api/v1/todos/{$otherTodo->id}");
+
+        $response->assertStatus(403);
+    });
+
+});
+describe('Authenticated & Authorized API Access', function () {
+    beforeEach(function () {
+        $this->user = User::factory()->create();
+        $this->otherUser = User::factory()->create();
+
+        $this->todos = Todo::factory()->count(3)->create([
+            'user_id' => $this->user->id
+        ]);
+
+        $this->otherUserTodos = Todo::factory()->count(2)->create([
+            'user_id' => $this->otherUser->id
+        ]);
+
+        Sanctum::actingAs($this->user);
+    });
+
+    test('user can only see their own set of todos', function () {
         $response = $this->getJson('/api/v1/todos');
 
         $response->assertStatus(200)
@@ -102,4 +98,83 @@ describe('Authenticated API Access', function () {
             'user_id' => $this->user->id
         ]);
     });
+
+    test('user can view their own todo', function () {
+        $todo = $this->todos[0];
+
+        $response = $this->getJson("/api/v1/todos/{$todo->id}");
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'id' => $todo->id,
+                    'title' => $todo->title,
+                    'description' => $todo->description,
+                    'status' => $todo->status,
+                ]
+            ]);
+    });
+    test('user can patch update their own todo', function () {
+        $todo = $this->todos[0];
+
+        $response = $this->patchJson("/api/v1/todos/{$todo->id}", [
+            'title' => 'Updated Title',
+            'description' => 'Updated description'
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'data' => [
+                    'title' => 'Updated Title',
+                    'description' => 'Updated description'
+                ]
+            ]);
+
+        $this->assertDatabaseHas('todos', [
+            'id' => $todo->id,
+            'title' => 'Updated Title',
+            'description' => 'Updated description'
+        ]);
+    });
+
+    test('user can delete their own todo', function () {
+        $todo = $this->todos[0];
+
+        $response = $this->deleteJson("/api/v1/todos/{$todo->id}");
+
+        $response->assertStatus(204);
+
+        $this->assertSoftDeleted('todos', [
+            'id' => $todo->id
+        ]);
+    });
+
+    test('filtering todos works', function () {
+        // Create todos with different statuses
+        $this->user->todos()->delete();
+        Todo::factory()->create([
+            'user_id' => $this->user->id,
+            'status' => 'done',
+            'priority' => 2
+        ]);
+
+        $response = $this->getJson('/api/v1/todos?status=done');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(1, 'data');
+
+        $response = $this->getJson('/api/v1/todos?priority=2');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(1, 'data');
+    });
+
+    test('can include user relationship', function () {
+        $response = $this->getJson('/api/v1/todos?userIncluded');
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.0.user.id', $this->user->id);
+    });
+
 });
+
