@@ -28,6 +28,29 @@ class StoreTodoRequest extends FormRequest
             'priority' => 'nullable|integer|between:1,3',
         ];
     }
+    public function bodyParameters(): array
+    {
+        return [
+            'title' => [
+                'description' => 'The title of the todo item',
+                'example' => 'Pay this month\'s rent',
+            ],
+            'description' => [
+                'description' => 'Detailed description of the todo item',
+                'example' => 'Contact landlord and arrange payment method',
+            ],
+            'status' => [
+                'description' => 'Current status of the todo item (defaults to "todo" if not specified)',
+                'example' => 'in-progress',
+            ],
+            'priority' => [
+                'description' => 'Priority level from 1 (lowest) to 3 (highest)',
+                'example' => 2,
+            ]
+        ];
+    }
+
+
 //    protected function prepareForValidation() {
 //        $this->merge([
 //            'field_name' => $this->fieldName,

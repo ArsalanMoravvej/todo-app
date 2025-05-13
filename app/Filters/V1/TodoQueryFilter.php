@@ -15,7 +15,6 @@ class TodoQueryFilter
         'description',
     ];
 
-
     public function __construct(Request $request)
     {
         $this->request = $request;

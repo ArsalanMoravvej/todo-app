@@ -25,6 +25,32 @@ class RegisterUserRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'password_confirmation' => 'required|string',
+        ];
+    }
+
+    /**
+     * Get the body parameters for API documentation
+     */
+    public function bodyParameters(): array
+    {
+        return [
+            'name' => [
+                'description' => 'The name of the user',
+                'example' => 'John Doe',
+            ],
+            'email' => [
+                'description' => 'The email address of the user',
+                'example' => 'john@example.com',
+            ],
+            'password' => [
+                'description' => 'The password for the user account (min 8 characters)',
+                'example' => 'secret-password',
+            ],
+            'password_confirmation' => [
+                'description' => 'Password confirmation that must match the password',
+                'example' => 'secret-password',
+            ],
         ];
     }
 }

@@ -13,7 +13,7 @@ class TodoPolicy
      */
     public function view(User $user, Todo $todo): bool
     {
-        return $todo->user->is($user);
+        return $user->id === $todo->user_id;
     }
 
     /**
@@ -21,7 +21,7 @@ class TodoPolicy
      */
     public function update(User $user, Todo $todo): bool
     {
-        return $todo->user->is($user);
+        return $user->id === $todo->user_id;
     }
 
     /**
@@ -29,6 +29,6 @@ class TodoPolicy
      */
     public function delete(User $user, Todo $todo): bool
     {
-        return $todo->user->is($user);
+        return $user->id === $todo->user_id;
     }
 }

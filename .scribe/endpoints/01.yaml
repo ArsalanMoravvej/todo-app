@@ -1,0 +1,489 @@
+name: 'Todos Management'
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/v1/todos
+    metadata:
+      groupName: 'Todos Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get All Todos'
+      description: "Returns a list of the current user's Todos."
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters:
+      page:
+        name: page
+        description: 'The page number for pagination. Must be at least 1.'
+        required: false
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      limit:
+        name: limit
+        description: 'Number of items per page (max 100). Must be between 1 and 100.'
+        required: false
+        example: 15
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      title:
+        name: title
+        description: 'Search term to filter results by title. Must not be greater than 255 characters.'
+        required: false
+        example: 'Pay rent'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'Search term to filter results by description.'
+        required: false
+        example: 'Set appointment with'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'Filter by the status of the item.'
+        required: false
+        example: in-progress
+        type: string
+        enumValues:
+          - todo
+          - in-progress
+          - done
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      priority:
+        name: priority
+        description: 'Filter by the priority of the item. Must be between 1 and 3.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      userIncluded:
+        name: userIncluded
+        description: "Includes user's information in results if passed."
+        required: false
+        example: 'true'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      page: 1
+      limit: 15
+      title: 'Pay rent'
+      description: 'Set appointment with'
+      status: in-progress
+      priority: 2
+      userIncluded: 'true'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":[{"id":123,"user_id":143,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1},{"id":124,"user_id":144,"title":"Autem et consequatur aut dolores.","description":"Facere tempora ex voluptatem laboriosam. Quis adipisci molestias fugit deleniti distinctio eum. Id aut libero aliquam veniam. Dolorem mollitia deleniti nemo.","status":"todo","priority":2}]}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/v1/todos/{todo_id}'
+    metadata:
+      groupName: 'Todos Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get a Todo given the ID'
+      description: 'Returns a specific Todo belonging to the current user given its ID.'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      todo_id:
+        name: todo_id
+        description: 'The ID of the todo.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      todo_id: 1
+    queryParameters:
+      userIncluded:
+        name: userIncluded
+        description: "optional boolean Includes user's information in results if passed as true."
+        required: false
+        example: 'false'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        custom: []
+    cleanQueryParameters:
+      userIncluded: 'false'
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":125,"user_id":145,"title":"Adipisci quidem nostrum qui.","description":"Iure odit et et modi ipsum nostrum omnis. Et consequatur aut dolores enim. Facere tempora ex voluptatem laboriosam. Quis adipisci molestias fugit deleniti distinctio eum.","status":"done","priority":1}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/v1/todos
+    metadata:
+      groupName: 'Todos Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Post a new Todo'
+      description: 'Returns the newly created Todo'
+      authenticated: true
+      custom: []
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'The title of the todo item. Must not be greater than 255 characters.'
+        required: true
+        example: "Pay this month's rent"
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'Detailed description of the todo item.'
+        required: true
+        example: 'Contact landlord and arrange payment method'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: 'Current status of the todo item (defaults to "todo" if not specified).'
+        required: false
+        example: in-progress
+        type: string
+        enumValues:
+          - todo
+          - in-progress
+          - done
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      priority:
+        name: priority
+        description: 'Priority level from 1 (lowest) to 3 (highest). Must be between 1 and 3.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      title: "Pay this month's rent"
+      description: 'Contact landlord and arrange payment method'
+      status: in-progress
+      priority: 2
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":126,"user_id":146,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1}}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PUT
+    uri: 'api/v1/todos/{todo_id}'
+    metadata:
+      groupName: 'Todos Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a Todo given the id'
+      description: 'Returns the Updated Todo'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      todo_id:
+        name: todo_id
+        description: 'The ID of the todo.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      todo_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'Must not be greater than 255 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: ''
+        required: true
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: true
+        example: done
+        type: string
+        enumValues:
+          - todo
+          - in-progress
+          - done
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      priority:
+        name: priority
+        description: 'Must be between 1 and 3.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      title: b
+      description: 'Eius et animi quos velit et.'
+      status: done
+      priority: 2
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - PATCH
+    uri: 'api/v1/todos/{todo_id}'
+    metadata:
+      groupName: 'Todos Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update a Todo given the id'
+      description: 'Returns the Updated Todo'
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      todo_id:
+        name: todo_id
+        description: 'The ID of the todo.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      todo_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: ''
+        required: false
+        example: 'Eius et animi quos velit et.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      status:
+        name: status
+        description: ''
+        required: false
+        example: todo
+        type: string
+        enumValues:
+          - todo
+          - in-progress
+          - done
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      priority:
+        name: priority
+        description: 'Must be between 1 and 3.'
+        required: false
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      title: b
+      description: 'Eius et animi quos velit et.'
+      status: todo
+      priority: 2
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/todos/{todo_id}'
+    metadata:
+      groupName: 'Todos Management'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      todo_id:
+        name: todo_id
+        description: 'The ID of the todo.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      todo_id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
