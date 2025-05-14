@@ -77,9 +77,9 @@ class TodoController extends Controller
      *
      * Returns the Updated Todo
      *
-     * @param UpdateTodoRequest $request
-     * @param Todo $todo
-     * @return TodoResource
+     * @authenticated
+     * @apiResource  App\Http\Resources\V1\TodoResource
+     * @apiResourceModel App\Models\Todo
      */
     public function update(UpdateTodoRequest $request, Todo $todo): TodoResource
     {
@@ -87,6 +87,11 @@ class TodoController extends Controller
         return new TodoResource($todo);
     }
 
+    /**
+     * Delete a Todo given the id
+     *
+     * @authenticated
+     */
     public function destroy(Todo $todo): JsonResponse
     {
         $todo->delete();

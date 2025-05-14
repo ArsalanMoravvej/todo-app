@@ -108,7 +108,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":[{"id":123,"user_id":143,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1},{"id":124,"user_id":144,"title":"Autem et consequatur aut dolores.","description":"Facere tempora ex voluptatem laboriosam. Quis adipisci molestias fugit deleniti distinctio eum. Id aut libero aliquam veniam. Dolorem mollitia deleniti nemo.","status":"todo","priority":2}]}'
+        content: '{"data":[{"id":131,"user_id":155,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1},{"id":132,"user_id":156,"title":"Autem et consequatur aut dolores.","description":"Facere tempora ex voluptatem laboriosam. Quis adipisci molestias fugit deleniti distinctio eum. Id aut libero aliquam veniam. Dolorem mollitia deleniti nemo.","status":"todo","priority":2}]}'
         headers: []
         description: ''
         custom: []
@@ -170,7 +170,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":125,"user_id":145,"title":"Adipisci quidem nostrum qui.","description":"Iure odit et et modi ipsum nostrum omnis. Et consequatur aut dolores enim. Facere tempora ex voluptatem laboriosam. Quis adipisci molestias fugit deleniti distinctio eum.","status":"done","priority":1}}'
+        content: '{"data":{"id":133,"user_id":157,"title":"Adipisci quidem nostrum qui.","description":"Iure odit et et modi ipsum nostrum omnis. Et consequatur aut dolores enim. Facere tempora ex voluptatem laboriosam. Quis adipisci molestias fugit deleniti distinctio eum.","status":"done","priority":1}}'
         headers: []
         description: ''
         custom: []
@@ -257,7 +257,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":126,"user_id":146,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1}}'
+        content: '{"data":{"id":134,"user_id":158,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1}}'
         headers: []
         description: ''
         custom: []
@@ -281,9 +281,10 @@ endpoints:
       subgroupDescription: ''
       title: 'Update a Todo given the id'
       description: 'Returns the Updated Todo'
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -304,9 +305,9 @@ endpoints:
     bodyParameters:
       title:
         name: title
-        description: 'Must not be greater than 255 characters.'
+        description: 'The updated title of the todo item. Must not be greater than 255 characters.'
         required: true
-        example: b
+        example: "Pay this month's rent before Friday"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -314,9 +315,9 @@ endpoints:
         custom: []
       description:
         name: description
-        description: ''
+        description: 'Updated detailed description of the todo item.'
         required: true
-        example: 'Eius et animi quos velit et.'
+        example: 'Contact landlord before Thursday and arrange payment method for Friday'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -324,7 +325,7 @@ endpoints:
         custom: []
       status:
         name: status
-        description: ''
+        description: 'Updated status of the todo item.'
         required: true
         example: done
         type: string
@@ -337,23 +338,32 @@ endpoints:
         custom: []
       priority:
         name: priority
-        description: 'Must be between 1 and 3.'
+        description: 'Updated priority level from 1 (lowest) to 3 (highest). Must be between 1 and 3.'
         required: true
-        example: 2
+        example: 3
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         custom: []
     cleanBodyParameters:
-      title: b
-      description: 'Eius et animi quos velit et.'
+      title: "Pay this month's rent before Friday"
+      description: 'Contact landlord before Thursday and arrange payment method for Friday'
       status: done
-      priority: 2
+      priority: 3
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":135,"user_id":159,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1}}'
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -369,9 +379,10 @@ endpoints:
       subgroupDescription: ''
       title: 'Update a Todo given the id'
       description: 'Returns the Updated Todo'
-      authenticated: false
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -392,9 +403,9 @@ endpoints:
     bodyParameters:
       title:
         name: title
-        description: 'Must not be greater than 255 characters.'
+        description: 'The updated title of the todo item. Must not be greater than 255 characters.'
         required: false
-        example: b
+        example: "Pay this month's rent before Friday"
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -402,9 +413,9 @@ endpoints:
         custom: []
       description:
         name: description
-        description: ''
+        description: 'Updated detailed description of the todo item.'
         required: false
-        example: 'Eius et animi quos velit et.'
+        example: 'Contact landlord before Thursday and arrange payment method for Friday'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -412,9 +423,9 @@ endpoints:
         custom: []
       status:
         name: status
-        description: ''
+        description: 'Updated status of the todo item.'
         required: false
-        example: todo
+        example: done
         type: string
         enumValues:
           - todo
@@ -425,23 +436,32 @@ endpoints:
         custom: []
       priority:
         name: priority
-        description: 'Must be between 1 and 3.'
+        description: 'Updated priority level from 1 (lowest) to 3 (highest). Must be between 1 and 3.'
         required: false
-        example: 2
+        example: 3
         type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: true
         custom: []
     cleanBodyParameters:
-      title: b
-      description: 'Eius et animi quos velit et.'
-      status: todo
-      priority: 2
+      title: "Pay this month's rent before Friday"
+      description: 'Contact landlord before Thursday and arrange payment method for Friday'
+      status: done
+      priority: 3
     fileParameters: []
-    responses: []
+    responses:
+      -
+        status: 200
+        content: '{"data":{"id":136,"user_id":160,"title":"Eius et animi.","description":"Et fugiat sunt nihil accusantium. Mollitia modi deserunt aut ab provident perspiciatis quo. Nostrum aut adipisci quidem nostrum.","status":"done","priority":1}}'
+        headers: []
+        description: ''
+        custom: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -455,11 +475,12 @@ endpoints:
       groupDescription: ''
       subgroup: ''
       subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: false
+      title: 'Delete a Todo given the id'
+      description: 'Returns Null'
+      authenticated: true
       custom: []
     headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
@@ -482,7 +503,10 @@ endpoints:
     fileParameters: []
     responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null

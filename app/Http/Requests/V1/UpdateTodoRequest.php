@@ -38,4 +38,30 @@ class UpdateTodoRequest extends FormRequest
             ];
         }
     }
+
+    public function bodyParameters(): array
+    {
+        return [
+            'title' => [
+                'description' => 'The updated title of the todo item',
+                'example' => 'Pay this month\'s rent before Friday',
+                'required' => false
+            ],
+            'description' => [
+                'description' => 'Updated detailed description of the todo item',
+                'example' => 'Contact landlord before Thursday and arrange payment method for Friday',
+                'required' => false
+            ],
+            'status' => [
+                'description' => 'Updated status of the todo item',
+                'example' => 'done',
+                'required' => false
+            ],
+            'priority' => [
+                'description' => 'Updated priority level from 1 (lowest) to 3 (highest)',
+                'example' => 3,
+                'required' => false
+            ]
+        ];
+    }
 }
