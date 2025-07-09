@@ -26,14 +26,16 @@ return new class extends Migration
             $table->softDeletes();
             $table->timestamps();
         });
-
-        //Check for the priority column being in the range.
-        DB::statement(
+        if (DB::getDriverName() !== 'sqlite') {
+            DB::statement(
             /** @lang text */
-            'ALTER TABLE todos
+                'ALTER TABLE todos
             ADD CONSTRAINT check_priority
             CHECK (priority >= 1 AND priority <= 3)'
-        );
+            );
+        }
+        //Check for the priority column being in the range.
+
 
     }
 
